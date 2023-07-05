@@ -64,7 +64,7 @@ const App = () => {
         try {
           const response = await fetch(
             
-            `https://geoserver-production.up.railway.app//api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
           );
           const data = await response.json();
           setCoordinates(data);
