@@ -14,7 +14,6 @@ const App = () => {
   });
   const [locationEnabled, setLocationEnabled] = useState(true);
 
-  
   useEffect(() => {
     if ("geolocation" in navigator) {
       // El navegador soporta la geolocalización
@@ -54,7 +53,7 @@ const App = () => {
       }
     });
   };
-  
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
@@ -62,7 +61,6 @@ const App = () => {
       console.log("La geolocalización no es soportada por este navegador.");
     }
   }, []);
-
 
   useEffect(() => {
     if (coordinates.code == 1) {
@@ -86,36 +84,41 @@ const App = () => {
   }, [coordinates]);
 
   const enableGPS = () => {
-    if ('geolocation' in navigator) {
+    if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         () => {
-          // Se obtuvo la posición correctamente, el GPS está activado
-          alert('La geolocalización está activada en este dispositivo.');
+          Swal.fire({
+            icon: "success",
+            text: "Se avtivo el GPS correctamente",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            window.location.reload();
+          });
         },
         () => {
           // Ocurrió un error al obtener la posición
-          alert('No se pudo activar la geolocalización en este dispositivo.');
+          alert("No se pudo activar la geolocalización en este dispositivo.");
         },
         { enableHighAccuracy: true }
       );
     } else {
       // El navegador no soporta la geolocalización
-      alert('La geolocalización no es compatible con este navegador.');
+      alert("La geolocalización no es compatible con este navegador.");
     }
-  }
+  };
 
-  useEffect(()=>{
-    if(!locationEnabled){
+  useEffect(() => {
+    if (!locationEnabled) {
       Swal.fire({
         icon: "error",
         title: "Para continuar...",
         text: "Debes tener la ubicación del dispositivo activo",
-        confirmButtonText: 'Activar',
-      }).then(()=>{
+        confirmButtonText: "Activar",
+      }).then(() => {
         enableGPS();
-      })
+      });
     }
-  },[locationEnabled])
+  }, [locationEnabled]);
   const validaCobertura = () => {
     if (latitud != 0 && longitud != 0) {
       const fetchData = async () => {
