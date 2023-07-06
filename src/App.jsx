@@ -153,7 +153,7 @@ const App = () => {
   } else if (longitud == 0 && latitud == 0) {
     return (
       <div className="globalContainer">
-        <button className="buttonValidar" onClick={validaCobertura()}>
+        <button className="buttonValidar" onClick={() => validaCobertura()}>
           Validar cobertura
         </button>
         {/* <GoogleMap
