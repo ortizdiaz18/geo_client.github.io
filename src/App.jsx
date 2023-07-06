@@ -63,6 +63,7 @@ const App = () => {
     }
   }, []);
 
+
   useEffect(() => {
     if (coordinates.code == 1) {
       Swal.fire({
@@ -84,13 +85,44 @@ const App = () => {
     console.log("cobertura:" + coordinates.code);
   }, [coordinates]);
 
+  const enableGPS = () => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        () => {
+          // Se obtuvo la posición correctamente, el GPS está activado
+          alert('La geolocalización está activada en este dispositivo.');
+        },
+        () => {
+          // Ocurrió un error al obtener la posición
+          alert('No se pudo activar la geolocalización en este dispositivo.');
+        },
+        { enableHighAccuracy: true }
+      );
+    } else {
+      // El navegador no soporta la geolocalización
+      alert('La geolocalización no es compatible con este navegador.');
+    }
+  }
+
+  useEffect(()=>{
+    if(!locationEnabled){
+      Swal.fire({
+        icon: "error",
+        title: "Para continuar...",
+        text: "Debes tener la ubicación del dispositivo activo",
+        confirmButtonText: 'Activar',
+      }).then(()=>{
+        enableGPS();
+      })
+    }
+  },[locationEnabled])
   const validaCobertura = () => {
     if (latitud != 0 && longitud != 0) {
       const fetchData = async () => {
         try {
           const response = await fetch(
-             `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
-            //`http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            //  `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            `http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
           );
           const data = await response.json();
           setCoordinates(data);
