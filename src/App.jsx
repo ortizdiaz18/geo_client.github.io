@@ -2,7 +2,7 @@ import "./styles/map.css";
 import React, { useEffect, useState } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import image from "./assets/logobitwan.webp";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 const App = () => {
   const [longitud, setLongitud] = useState(0);
@@ -12,6 +12,30 @@ const App = () => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyAjd2NH6l2xOuXkXeQ8dYa9WiSYCOYiJVg",
   });
+  const [locationEnabled, setLocationEnabled] = useState(true);
+
+  
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      // El navegador soporta la geolocalización
+      const watchId = navigator.geolocation.watchPosition(
+        () => {
+          setLocationEnabled(true);
+        },
+        () => {
+          setLocationEnabled(false);
+        }
+      );
+
+      // Devolver una función de limpieza para detener la vigilancia cuando el componente se desmonte
+      return () => {
+        navigator.geolocation.clearWatch(watchId);
+      };
+    } else {
+      // El navegador no soporta la geolocalización
+      setLocationEnabled(false);
+    }
+  }, []);
 
   const onLoad = (marker) => {
     // Realiza la geocodificación inversa cuando se carga el marcador
@@ -30,7 +54,7 @@ const App = () => {
       }
     });
   };
-
+  
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
@@ -39,31 +63,34 @@ const App = () => {
     }
   }, []);
 
-  useEffect(()=>{
-    if(coordinates.code== 1){
+  useEffect(() => {
+    if (coordinates.code == 1) {
       Swal.fire({
-        icon: 'success',
-        title: 'Wow...',
-        text: 'En tu direccion tenemos cobertura!',
-        footer: '<a href="https://wa.me/573176995294?text=Contratar%20servicio">Quieres contratar el servicio?</a>'
-      })
-    }else if(coordinates.code == 0){
+        icon: "success",
+        title: "Wow...",
+        text: "En tu direccion tenemos cobertura!",
+        footer:
+          '<a href="https://wa.me/573176995294?text=Contratar%20servicio">Quieres contratar el servicio?</a>',
+      });
+    } else if (coordinates.code == 0) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'En este momento no tenemos cobertura en tu sector',
-        footer: '<a href="https://wa.me/573176995294?text=Asesor">Quieres hablar con un asesor?</a>'
-      })
+        icon: "error",
+        title: "Oops...",
+        text: "En este momento no tenemos cobertura en tu sector",
+        footer:
+          '<a href="https://wa.me/573176995294?text=Asesor">Quieres hablar con un asesor?</a>',
+      });
     }
-    console.log("cobertura:"+coordinates.code);
-  },[coordinates])
+    console.log("cobertura:" + coordinates.code);
+  }, [coordinates]);
 
   const validaCobertura = () => {
     if (latitud != 0 && longitud != 0) {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            `https://open-rat-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+             `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            //`http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
           );
           const data = await response.json();
           setCoordinates(data);
@@ -94,11 +121,11 @@ const App = () => {
         <button className="buttonValidar" onClick={validaCobertura()}>
           Validar cobertura
         </button>
-        <GoogleMap
+        {/* <GoogleMap
           zoom={10}
           center={{ lat: 44, lng: -80 }}
           mapContainerClassName="map-container"
-        ></GoogleMap>
+        ></GoogleMap> */}
       </div>
     );
   } else {
@@ -107,10 +134,13 @@ const App = () => {
         <div className="bodyContainer">
           <div className="buttonContainer">
             <img className="logoBitwan" src={image} alt="" />
-            <h5>Lu ubicación ontenida es: </h5>
-            <p >{direccion}</p>
-            <p className="aviso">Si quieres validar la cobertura para esta ddireccion da click en "Validar Cobertura"</p>
-            <button className="buttonValidar" onClick={()=>validaCobertura()}>
+            <h5>Lu ubicación obtenida es: </h5>
+            <p>{direccion}</p>
+            <p className="aviso">
+              Si quieres validar la cobertura para esta dirección da click en
+              "Validar Cobertura"
+            </p>
+            <button className="buttonValidar" onClick={() => validaCobertura()}>
               Validar cobertura
             </button>
           </div>
