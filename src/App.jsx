@@ -109,13 +109,33 @@ const App = () => {
         },
         () => {
           // Ocurrió un error al obtener la posición
-          alert("No se pudo activar la geolocalización en este dispositivo.");
+          Swal.fire({
+            icon: "error",
+            text: "No se pudo activar la geolocalización en este dispositivo.",
+            confirmButtonText: "Ok",
+            customClass: {
+              confirmButton: "botonPopUp",
+            },
+          }).then(() => {
+            window.location.reload();
+          });
+          
         },
         { enableHighAccuracy: true }
       );
     } else {
       // El navegador no soporta la geolocalización
-      alert("La geolocalización no es compatible con este navegador.");
+      Swal.fire({
+        icon: "error",
+        text: "La geolocalización no es compatible con este navegador.",
+        confirmButtonText: "Ok",
+        customClass: {
+          confirmButton: "botonPopUp",
+        },
+      }).then(() => {
+        window.location.reload();
+      });
+      
     }
   };
 
