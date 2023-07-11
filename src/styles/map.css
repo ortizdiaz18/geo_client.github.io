@@ -89,10 +89,11 @@
 p{
     width: 90%;
     text-align: center;
+    margin-top: 10%;
 }
 .aviso{
     font-size: small;
     font-weight: bold;
     text-align: center;
-    margin-top: 20%;
+    margin-top: 10%;
 }
