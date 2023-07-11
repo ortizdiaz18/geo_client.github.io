@@ -1,7 +1,10 @@
 import "./styles/map.css";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import image from "./assets/logobitwan.webp";
+import encabezado from "./assets/encabezado.webp";
+import antena from "./assets/antena.png";
+import ubicacion from "./assets/ubicacion.png";
 import Swal from "sweetalert2";
 
 const App = () => {
@@ -70,6 +73,9 @@ const App = () => {
         text: "En tu direccion tenemos cobertura!",
         footer:
           '<a href="https://wa.me/573176995294?text=Contratar%20servicio">Quieres contratar el servicio?</a>',
+        customClass: {
+          confirmButton: "botonPopUp",
+        },
       });
     } else if (coordinates.code == 0) {
       Swal.fire({
@@ -78,6 +84,9 @@ const App = () => {
         text: "En este momento no tenemos cobertura en tu sector",
         footer:
           '<a href="https://wa.me/573176995294?text=Asesor">Quieres hablar con un asesor?</a>',
+          customClass: {
+            confirmButton: "botonPopUp",
+          },
       });
     }
     console.log("cobertura:" + coordinates.code);
@@ -91,6 +100,9 @@ const App = () => {
             icon: "success",
             text: "Se avtivo el GPS correctamente",
             confirmButtonText: "Ok",
+            customClass: {
+              confirmButton: "botonPopUp",
+            },
           }).then(() => {
             window.location.reload();
           });
@@ -114,6 +126,9 @@ const App = () => {
         title: "Para continuar...",
         text: "Debes tener la ubicación del dispositivo activo",
         confirmButtonText: "Activar",
+        customClass: {
+          confirmButton: "botonPopUp",
+        },
       }).then(() => {
         enableGPS();
       });
@@ -124,8 +139,8 @@ const App = () => {
       const fetchData = async () => {
         try {
           const response = await fetch(
-             `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
-            // `http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            //`http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
           );
           const data = await response.json();
           setCoordinates(data);
@@ -168,15 +183,21 @@ const App = () => {
       <div className="globalContainer">
         <div className="bodyContainer">
           <div className="buttonContainer">
-            <img className="logoBitwan" src={image} alt="" />
-            <h5>Lu ubicación obtenida es: </h5>
+            <div className="header">
+              <img className="logoBitwan" src={image} alt="" />
+              <h1 className="titulo">Valida tu cobertura</h1>
+            </div>
+            <img className="imgEncabezado" src={encabezado} alt="" />
+            <h5>Tu ubicación es: </h5>
+            <img className="imgUbicacion" src={ubicacion} alt="" />
             <p>{direccion}</p>
             <p className="aviso">
               Si quieres validar la cobertura para esta dirección da click en
               "Validar Cobertura"
             </p>
             <button className="buttonValidar" onClick={() => validaCobertura()}>
-              Validar cobertura
+              Validar cobertura{" "}
+              <img className="imgAntena" src={antena} alt="" />
             </button>
           </div>
           <div className="containerGeneralMap">
