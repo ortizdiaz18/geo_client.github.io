@@ -141,3 +141,8 @@ h5{
         transform: rotate(360deg);
     }
 }
+
+.swal2-confirm {
+    background-color: #4296ef !important;
+    color: white;
+  }
