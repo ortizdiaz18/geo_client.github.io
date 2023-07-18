@@ -212,19 +212,10 @@ const Cobertura = () => {
   };
 
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return <div className="loader"></div>;
   } else if (longitud == 0 && latitud == 0) {
     return (
-      <div className="globalContainer">
-        <button className="buttonValidar" onClick={() => validaCobertura()}>
-          Validar cobertura
-        </button>
-        {/* <GoogleMap
-          zoom={10}
-          center={{ lat: 44, lng: -80 }}
-          mapContainerClassName="map-container"
-        ></GoogleMap> */}
-      </div>
+      <div className="loader"></div>
     );
   } else {
     return (
