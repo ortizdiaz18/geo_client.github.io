@@ -8,19 +8,17 @@ import ubicacion from "./assets/ubicacion.png";
 import Swal from "sweetalert2";
 import { Route, Routes, useNavigate, Navigate, Outlet } from "react-router-dom";
 
-
 const ProtectedRoute = ({ isActive }) => {
   if (isActive) {
     // Renderizar el contenido de la página de aterrizaje si está autenticado
-    return <Outlet/>;
+    return <Outlet />;
   } else {
     // Redirigir al usuario a la página de inicio de sesión si no está autenticado
     return <Navigate to="/" replace />;
   }
 };
 
-
-const Landing = ( {setIsActive}) => {
+const Landing = ({ setIsActive }) => {
   const navigate = useNavigate();
   useEffect(() => {
     Swal.fire({
@@ -32,7 +30,7 @@ const Landing = ( {setIsActive}) => {
         confirmButton: "botonPopUp",
       },
     }).then(() => {
-      setIsActive(true)
+      setIsActive(true);
       navigate("cobertura");
     });
   });
@@ -119,7 +117,7 @@ const Cobertura = () => {
         },
       });
     }
-   // console.log("cobertura:" + coordinates.code);
+    // console.log("cobertura:" + coordinates.code);
   }, [coordinates]);
 
   const enableGPS = () => {
@@ -187,8 +185,8 @@ const Cobertura = () => {
       const fetchData = async () => {
         try {
           const response = await fetch(
-           `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
-           // `http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            // `http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
           );
           const data = await response.json();
           setCoordinates(data);
@@ -212,14 +210,16 @@ const Cobertura = () => {
   };
 
   if (!isLoaded) {
-    return <div className="containerLoader">
+    return (
+      <div className="containerLoader">
         <div className="loader"></div>
-    </div>;
+      </div>
+    );
   } else if (longitud == 0 && latitud == 0) {
     return (
       <div className="containerLoader">
         <div className="loader"></div>
-    </div>
+      </div>
     );
   } else {
     return (
@@ -266,9 +266,12 @@ const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Landing setIsActive = {setIsActive} />} />
-        <Route path="/cobertura"  element={<ProtectedRoute isActive={isActive} />}>
-        <Route index element={<Cobertura />} />
+        <Route path="/" element={<Landing setIsActive={setIsActive} />} />
+        <Route
+          path="/cobertura"
+          element={<ProtectedRoute isActive={isActive} />}
+        >
+          <Route index element={<Cobertura />} />
         </Route>
       </Routes>
     </div>
