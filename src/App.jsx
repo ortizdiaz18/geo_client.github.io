@@ -212,10 +212,14 @@ const Cobertura = () => {
   };
 
   if (!isLoaded) {
-    return <div className="loader"></div>;
+    return <div className="containerLoader">
+        <div className="loader"></div>
+    </div>;
   } else if (longitud == 0 && latitud == 0) {
     return (
-      <div className="loader"></div>
+      <div className="containerLoader">
+        <div className="loader"></div>
+    </div>
     );
   } else {
     return (
