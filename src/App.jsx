@@ -6,8 +6,38 @@ import encabezado from "./assets/encabezado.webp";
 import antena from "./assets/antena.png";
 import ubicacion from "./assets/ubicacion.png";
 import Swal from "sweetalert2";
+import { Route, Routes, useNavigate, Navigate, Outlet } from "react-router-dom";
 
-const App = () => {
+
+const ProtectedRoute = ({ isActive }) => {
+  if (isActive) {
+    // Renderizar el contenido de la página de aterrizaje si está autenticado
+    return <Outlet/>;
+  } else {
+    // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+    return <Navigate to="/" replace />;
+  }
+};
+
+
+const Landing = ( {setIsActive}) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    Swal.fire({
+      icon: "warning",
+      title: "Activar ubicación",
+      text: "Vamos a validar su cobertura, por favor active el GPS",
+      confirmButtonText: "Activar",
+      customClass: {
+        confirmButton: "botonPopUp",
+      },
+    }).then(() => {
+      setIsActive(true)
+      navigate("cobertura");
+    });
+  });
+};
+const Cobertura = () => {
   const [longitud, setLongitud] = useState(0);
   const [latitud, setLatitud] = useState(0);
   const [coordinates, setCoordinates] = useState({});
@@ -84,12 +114,12 @@ const App = () => {
         text: "En este momento no tenemos cobertura en tu sector",
         footer:
           '<a href="https://wa.me/573176995294?text=Asesor">Quieres hablar con un asesor?</a>',
-          customClass: {
-            confirmButton: "botonPopUp",
-          },
+        customClass: {
+          confirmButton: "botonPopUp",
+        },
       });
     }
-    console.log("cobertura:" + coordinates.code);
+   // console.log("cobertura:" + coordinates.code);
   }, [coordinates]);
 
   const enableGPS = () => {
@@ -119,7 +149,6 @@ const App = () => {
           }).then(() => {
             window.location.reload();
           });
-          
         },
         { enableHighAccuracy: true }
       );
@@ -135,7 +164,6 @@ const App = () => {
       }).then(() => {
         window.location.reload();
       });
-      
     }
   };
 
@@ -159,8 +187,8 @@ const App = () => {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
-            //`http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+           `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+           // `http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
           );
           const data = await response.json();
           setCoordinates(data);
@@ -238,4 +266,17 @@ const App = () => {
   }
 };
 
+const App = () => {
+  const [isActive, setIsActive] = useState(false);
+  return (
+    <div>
+      <Routes>
+        <Route path="/" element={<Landing setIsActive = {setIsActive} />} />
+        <Route path="/cobertura"  element={<ProtectedRoute isActive={isActive} />}>
+        <Route index element={<Cobertura />} />
+        </Route>
+      </Routes>
+    </div>
+  );
+};
 export default App;
