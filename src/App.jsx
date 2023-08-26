@@ -230,14 +230,17 @@ const Cobertura = () => {
               <img className="logoBitwan" src={image} alt="" />
               <h1 className="titulo">Valida tu cobertura</h1>
             </div>
-            <img className="imgEncabezado" src={encabezado} alt="" />
-            <h5>Tu ubicación es: </h5>
-            <img className="imgUbicacion" src={ubicacion} alt="" />
-            <p>{direccion}</p>
-            <p className="aviso">
+            <div className="containerUbicacion">
+              <img className="imgUbicacion" src={ubicacion} alt="" />
+              <div className="containerInfoDireccion">
+                <h5>Tu ubicación es: </h5>
+                <p>{direccion}</p>
+              </div>
+            </div>
+            {/* <p className="aviso">
               Si quieres validar la cobertura para esta dirección da click en
               "Validar Cobertura"
-            </p>
+            </p> */}
             <button className="buttonValidar" onClick={() => validaCobertura()}>
               Validar cobertura{" "}
               <img className="imgAntena" src={antena} alt="" />
