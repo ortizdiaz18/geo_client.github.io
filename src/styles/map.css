@@ -161,6 +161,9 @@ h5 {
   padding-left: 5%;
   width: 50%;
 }
+.ContainerPop{
+  font-weight: bold !important;
+}
 @media(max-width: 1250px){
     .globalContainer {
         width: 100vw;

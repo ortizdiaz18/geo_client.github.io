@@ -74,6 +74,7 @@ const Cobertura = () => {
       if (status === "OK") {
         if (results[0]) {
           // Obtiene la dirección aproximada
+          console.log(results);
           const direccion = results[0].formatted_address;
           setDireccion(direccion);
         } else {
@@ -108,12 +109,14 @@ const Cobertura = () => {
     } else if (coordinates.code == 0) {
       Swal.fire({
         icon: "error",
-        title: "Oops...",
-        text: "En este momento no tenemos cobertura en tu sector",
+        title:" " ,
+        text: "No tenemos cobertura en esta ubicación",
         footer:
           '<a href="https://wa.me/573176995294?text=Asesor">Quieres hablar con un asesor?</a>',
+          confirmButtonText:"Solicitar Cobertura",
         customClass: {
           confirmButton: "botonPopUp",
+          htmlContainer:"ContainerPop"
         },
       });
     }
