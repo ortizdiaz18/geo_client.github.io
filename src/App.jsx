@@ -41,7 +41,7 @@ const Cobertura = () => {
   const [coordinates, setCoordinates] = useState({});
   const [direccion, setDireccion] = useState("");
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyAjd2NH6l2xOuXkXeQ8dYa9WiSYCOYiJVg",
+    googleMapsApiKey: "AIzaSyBJUnzRS-9L6X2_nSglcAY9dCBBHo1SJgA",
   });
   const [locationEnabled, setLocationEnabled] = useState(true);
 
@@ -109,14 +109,14 @@ const Cobertura = () => {
     } else if (coordinates.code == 0) {
       Swal.fire({
         icon: "error",
-        title:" " ,
+        title: " ",
         text: "No tenemos cobertura en esta ubicación",
         footer:
           '<a href="https://wa.me/573176995294?text=Asesor">Quieres hablar con un asesor?</a>',
-          confirmButtonText:"Solicitar Cobertura",
+        confirmButtonText: "Solicitar Cobertura",
         customClass: {
           confirmButton: "botonPopUp",
-          htmlContainer:"ContainerPop"
+          htmlContainer: "ContainerPop",
         },
       });
     }
@@ -188,8 +188,8 @@ const Cobertura = () => {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            `https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
-            // `http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            //`https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            `http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
           );
           const data = await response.json();
           setCoordinates(data);
