@@ -13,5 +13,6 @@ export default defineConfig((command, mode) => {
     preview: {
       port: process.env.PORT,
     },
+    base: "./",
   };
 });
