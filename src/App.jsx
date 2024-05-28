@@ -192,7 +192,7 @@ const Cobertura = () => {
             // `http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
             `${
               import.meta.env.VITE_URL
-            }/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            }/cobertura?latitud=${latitud}&longitud=${longitud}`
           );
           const data = await response.json();
           setCoordinates(data);
