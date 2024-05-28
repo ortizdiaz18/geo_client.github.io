@@ -189,7 +189,10 @@ const Cobertura = () => {
         try {
           const response = await fetch(
             //`https://geoserver-production.up.railway.app/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
-            `http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            // `http://localhost:3000/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
+            `${
+              import.meta.env.VITE_URL
+            }/api/v1/cobertura?latitud=${latitud}&longitud=${longitud}`
           );
           const data = await response.json();
           setCoordinates(data);
