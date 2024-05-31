@@ -6,7 +6,14 @@ import encabezado from "./assets/encabezado.webp";
 import antena from "./assets/antena.png";
 import ubicacion from "./assets/ubicacion.png";
 import Swal from "sweetalert2";
-import { Route, Routes, useNavigate, Navigate, Outlet } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  useNavigate,
+  Navigate,
+  Outlet,
+  useSearchParams,
+} from "react-router-dom";
 
 const ProtectedRoute = ({ isActive }) => {
   if (isActive) {
@@ -20,6 +27,7 @@ const ProtectedRoute = ({ isActive }) => {
 
 const Landing = ({ setIsActive }) => {
   const navigate = useNavigate();
+
   useEffect(() => {
     Swal.fire({
       icon: "warning",
@@ -35,7 +43,9 @@ const Landing = ({ setIsActive }) => {
     });
   });
 };
-const Cobertura = () => {
+
+const Cobertura = ({ data }) => {
+  const [params, setParams] = useSearchParams();
   const [longitud, setLongitud] = useState(0);
   const [latitud, setLatitud] = useState(0);
   const [coordinates, setCoordinates] = useState({});
@@ -44,6 +54,16 @@ const Cobertura = () => {
     googleMapsApiKey: "AIzaSyBJUnzRS-9L6X2_nSglcAY9dCBBHo1SJgA",
   });
   const [locationEnabled, setLocationEnabled] = useState(true);
+  function isObjectEmptyOrNull(obj) {
+    for (let key in obj) {
+      if (obj[key] === null || obj[key] === "") {
+        return true;
+      }
+    }
+    return false;
+  }
+  let response = isObjectEmptyOrNull(data);
+  setParams(response ? "" : data);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -240,7 +260,13 @@ const Cobertura = () => {
               <img className="imgUbicacion" src={ubicacion} alt="" />
               <div className="containerInfoDireccion">
                 <h5>Tu ubicación es: </h5>
-                <p>{direccion}</p>
+                {direccion ? (
+                  <p>{direccion}</p>
+                ) : (
+                  <div className="containerSpin">
+                    <div className="spinner"></div>
+                  </div>
+                )}
               </div>
             </div>
             {/* <p className="aviso">
@@ -271,6 +297,18 @@ const Cobertura = () => {
 };
 
 const App = () => {
+  const [params, setParams] = useSearchParams();
+  let nombre = params.get("nombre");
+  let apellido = params.get("apellido");
+  let servicio = params.get("servicio");
+  let celular = params.get("celular");
+
+  const [data, setData] = useState({
+    nombre: nombre,
+    apellido: apellido,
+    servicio: servicio,
+    celular: celular,
+  });
   const [isActive, setIsActive] = useState(false);
   return (
     <div>
@@ -280,7 +318,7 @@ const App = () => {
           path="/cobertura"
           element={<ProtectedRoute isActive={isActive} />}
         >
-          <Route index element={<Cobertura />} />
+          <Route index element={<Cobertura data={data} />} />
         </Route>
       </Routes>
     </div>
